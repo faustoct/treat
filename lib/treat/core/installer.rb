@@ -23,14 +23,14 @@ module Treat::Core::Installer
   
   # Install required dependencies and optional
   # dependencies for a specific language.
-  def self.install(language = 'english', opts={})
+  def self.install(language = 'english', bundle=false)
     
     # Require the Rubygem dependency installer.
     silence_warnings do
       require 'rubygems/dependency_installer'
     end
     
-    @@installer = Gem::DependencyInstaller.new(opts)
+    @@installer = Gem::DependencyInstaller.new
     
     if language == 'travis'
       install_travis; return
@@ -41,12 +41,14 @@ module Treat::Core::Installer
     puts "\nTreat Installer, v. #{Treat::VERSION.to_s}\n\n"
     
     begin
-
-      #title "Installing core dependencies."
-      install_language_dependencies('agnostic') 
       
-      #title "Installing dependencies for the #{l}.\n"
-      install_language_dependencies(language)
+      unless bundle
+        #title "Installing core dependencies."
+        install_language_dependencies('agnostic') 
+        
+        #title "Installing dependencies for the #{l}.\n"
+        install_language_dependencies(language)
+      end
 
       # If gem is installed only, download models.
       begin
@@ -84,7 +86,7 @@ module Treat::Core::Installer
   
 
   def self.install_language_dependencies(language)
-    dependencies = Treat.languages[language].dependencies
+      dependencies = Treat.languages[language].dependencies
     puts "No dependencies to install.\n" if dependencies.empty?
     dependencies.each do |dependency|
       install_gem(dependency)
