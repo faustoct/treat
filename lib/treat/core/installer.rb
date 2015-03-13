@@ -23,14 +23,14 @@ module Treat::Core::Installer
   
   # Install required dependencies and optional
   # dependencies for a specific language.
-  def self.install(language = 'english')
+  def self.install(language = 'english', bundle = false)
     
     # Require the Rubygem dependency installer.
     silence_warnings do
       require 'rubygems/dependency_installer'
     end
     
-    @@installer = Gem::DependencyInstaller.new
+    @@installer = Gem::DependencyInstaller.new unless bundle
     
     if language == 'travis'
       install_travis; return
@@ -42,12 +42,12 @@ module Treat::Core::Installer
     
     begin
 
-      title "Installing core dependencies."
-      install_language_dependencies('agnostic')
+      #title "Installing core dependencies."
+      install_language_dependencies('agnostic') unless bundle 
       
-      title "Installing dependencies for the #{l}.\n"
+      #title "Installing dependencies for the #{l}.\n"
       install_language_dependencies(language)
-      
+
       # If gem is installed only, download models.
       begin
         Gem::Specification.find_by_name('punkt-segmenter')
@@ -177,7 +177,6 @@ module Treat::Core::Installer
   # Install a dependency with a supplied purpose
   # but ask the user if she wishes to do so first.
   def self.install_gem(dependency)
-
     begin
       puts "Installing #{dependency}...\n"
       @@installer.install(dependency)
