@@ -30,7 +30,7 @@ module Treat::Core::Installer
       require 'rubygems/dependency_installer'
     end
     
-    @@installer = Gem::DependencyInstaller.new
+    @@installer = Gem::DependencyInstaller.new({force:true})
     
     if language == 'travis'
       install_travis; return
