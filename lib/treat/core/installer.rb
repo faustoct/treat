@@ -23,14 +23,14 @@ module Treat::Core::Installer
   
   # Install required dependencies and optional
   # dependencies for a specific language.
-  def self.install(language = 'english')
+  def self.install(language = 'english', opts={})
     
     # Require the Rubygem dependency installer.
     silence_warnings do
       require 'rubygems/dependency_installer'
     end
     
-    @@installer = Gem::DependencyInstaller.new({force:true})
+    @@installer = Gem::DependencyInstaller.new(opts)
     
     if language == 'travis'
       install_travis; return
