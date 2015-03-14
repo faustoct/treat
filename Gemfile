@@ -2,7 +2,8 @@ source 'https://rubygems.org'
 
 gemspec
 
-gem 'birch'
+#gem 'birch'
+gem 'birch', :github => 'faustoct/birch'
 gem 'schiphol'
 gem 'yomu'
 gem 'ruby-readability'
